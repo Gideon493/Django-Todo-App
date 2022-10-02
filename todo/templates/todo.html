@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Todos{% endblock title %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div>
+        {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info">
+    <strong>{{message}}</strong>
+  </div>
+  {% endfor %}
+  {% endif %}
+    </div>
+    <div>
+        <h2 class="display-5">My Todo App</h2>
+        <div class="">
+            {% for i in list %}
+            <div class="card my-3 shadow border-0">
+
+                <div class="card-body">
+                    <h5 class="card-title display-6">{{i.title}}</h5>
+                    <p class="card-text">{{i.details}}</p>
+                    <p class="card-text text-sm">{{i.date}}</p>
+                    <div>
+                        <form action="/todo/del/{{i.id}}" method="post" class="mx-4">
+                            {% csrf_token %}
+                            <button value="Remove" type="submit" class="px-4 btn btn-danger">Remove</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <h3 class="display-5">Write New Todo</h3>
+
+    <div class="card p-5 w-75 my-4 border-0 shadow">
+        <form action="/todo/todo/" method="post">
+            {% csrf_token %}
+            {{forms|crispy}}
+
+            <input type="submit" value="Add To Do" class="btn btn-secondary px-4 my-4">
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
